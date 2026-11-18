@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>日本旅遊刷卡／PayPay 回饋速查與記帳</title>
+<style>
+:root{--bg:#FAF6F0;--grid:#F5EFE6;--card:#FFFDF9;--tea:#C8A98E;--latte:#8C6A52;--pink:#F7E4E6;--rose:#E8B4B8;--red:#D93838;--redbg:#FDE8E8;--tx:#4A3B32;--ln:#E9DFD2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2A221D;--grid:#332A24;--card:#3A302A;--pink:#4A3538;--tx:#F1E7DC;--ln:#54463C;--redbg:#4D2626;--red:#FF6B6B}}
+*{box-sizing:border-box}html{scroll-padding-top:120px}
+body{margin:0;background:var(--bg) repeating-linear-gradient(0deg,transparent 0 23px,var(--grid) 23px 24px);color:var(--tx);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;line-height:1.6;font-size:15px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--card);border-bottom:2px solid var(--tea);padding:8px 10px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:21}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+h1{font-size:16px;margin:0;color:var(--latte)}
+.rate{font-size:13px}.rate select{padding:2px 6px;font-size:13px}.rate input{width:64px;padding:2px 6px;border:1px solid var(--tea);border-radius:8px;background:var(--bg);color:var(--tx)}
+nav{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px}
+nav button{flex:none;border:1px solid var(--tea);background:var(--bg);color:var(--latte);border-radius:99px;padding:6px 12px;font:inherit;font-size:14px;cursor:pointer}
+nav button.on{background:var(--latte);color:#fff;border-color:var(--latte)}
+main{max-width:760px;margin:0 auto;padding:12px}
+.c{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:14px;margin:0 0 14px;box-shadow:0 3px 10px rgba(140,106,82,.12)}
+.c h2,.c h3{margin:0 0 6px;color:var(--latte);font-size:17px}
+.tag{display:inline-block;background:var(--pink);color:var(--latte);border-radius:99px;padding:1px 10px;font-size:12px;margin:0 4px 4px 0}
+.red{color:var(--red);font-weight:800;font-size:18px}
+.capbox{background:var(--redbg);border:1px solid var(--rose);border-radius:12px;padding:8px 10px;margin:8px 0}
+.capbox div{font-size:16px}.n{color:var(--red);font-weight:800;font-size:21px}.capbox small .n{font-size:17px}
+.capbox small{color:var(--tx);font-weight:400;font-size:12px}
+.st{display:inline-block;margin-top:4px;padding:2px 10px;border-radius:99px;font-size:13px;font-weight:700;background:#fff;border:1px solid var(--ln);color:var(--tx)}
+.step{border-left:4px solid var(--tea);padding:2px 0 2px 10px;margin:10px 0}
+.step b{color:var(--latte)}
+.btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.btns a,.b{display:inline-block;background:var(--tea);color:#fff;text-decoration:none;border:0;border-radius:10px;padding:6px 11px;font:inherit;font-size:13px;cursor:pointer}
+.btns a.reg{background:var(--red)}.btns a{max-width:100%;white-space:normal}.cp{margin:10px 0;padding-top:8px;border-top:1px dashed var(--ln)}.cp small{display:block;margin-top:4px;line-height:1.5}.b.g{background:var(--rose);color:#4A3B32}.b.x{background:transparent;color:var(--red);border:1px solid var(--red);padding:1px 8px}
+input,select{font:inherit;padding:8px;border:1px solid var(--tea);border-radius:10px;background:var(--bg);color:var(--tx);max-width:100%}
+.row{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}.row>*{flex:1 1 110px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chips button{border:1px solid var(--tea);background:var(--card);color:var(--latte);border-radius:99px;padding:7px 12px;font:inherit;font-size:14px;cursor:pointer}
+.chips button.on{background:var(--rose);color:#4A3B32;border-color:var(--rose);font-weight:700}
+.bar{height:12px;border-radius:99px;background:var(--grid);border:1px solid var(--ln);overflow:hidden;margin:6px 0}
+.bar i{display:block;height:100%;background:var(--red)}
+details{margin-top:8px}summary{cursor:pointer;color:var(--latte);font-weight:700}
+.warn{background:var(--pink);border-radius:12px;padding:8px 10px;margin:8px 0;font-size:14px}
+.rec{display:flex;justify-content:space-between;gap:6px;align-items:center;border-top:1px dashed var(--ln);padding:4px 0;font-size:14px}
+ul{padding-left:20px;margin:4px 0}
+.hide{display:none}
+</style>
+</head>
+<body>
+<header>
+ <div class="top"><h1>🧾 日本刷卡速查手帳 · 2026 Q4</h1>
+ <div class="rate">1 JPY = <input id="rate" type="number" step="0.001" min="0.01"> TWD</div><div class="rate">目前行程 <select id="wk"><option value="1">第一週 11/19(四)-11/22(日)</option><option value="2">第二週 11/23(一)-11/25(三)</option></select></div></div>
+ <nav id="nav"></nav>
+</header>
+<main>
+ <section class="c" id="calc">
+  <b>💴 即時消費試算</b>
+  <div class="row"><input id="amt" type="number" inputmode="decimal" placeholder="預計消費金額"><select id="cur"><option>JPY</option><option>TWD</option></select></div>
+  <small id="conv"></small>
+ </section>
+ <div id="body"></div>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const fmt=n=>Math.round(n).toLocaleString('en-US');
+let S={rate:0.215,jcb:'a',uni:'up',recs:[]},tab='pri',venue=0,amt=0,cur='JPY';
+try{Object.assign(S,JSON.parse(localStorage.getItem('jpcard')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('jpcard',JSON.stringify(S))}catch(e){}};
+S.recs.forEach(r=>{if(r.c==='qp')r.c='q1'});
+const jpy=t=>t/S.rate;
+const rid=id=>id==='qp'?(S.wk==2?'q2':'q1'):id;
+const E='https://www.esunbank.com/zh-tw/personal/credit-card/',SR='https://mma.sinopac.com/SinoCard/Activity/Register';
+const L={bic:['BicCamera 10%+7% 優惠介紹',E+'discount/shopInfo?sno=3209'],cos:['COSMOS 藥妝 9% 優惠介紹',E+'discount/shopInfo?sno=3295']};
+const C={
+qp:{n:'全支付 PXPay Plus｜PayPay',rate:'最高 15%',p:'週',cap:2000,note:'日本 PayPay 最高 10% ＋ 連結國泰世華銀行帳戶週週加碼 5%，免 1.5% 海外手續費；另贈 5% 返台樂購券。以週一～週日為一週期，每週加碼 5% 上限 100 全點（刷 NT$2,000 封頂），下週一額度重置。',cond:'須「連結國泰世華（或將來）銀行帳戶」扣款才享週週重置 5%；若改綁國泰世華信用卡，須單筆滿 NT$1,000 且以波段區間計算上限，非週週重置。不可綁玉山或永豐卡、不可實體刷卡。',
+ st:[['店家優惠條碼','先於活動頁領券，再用全支付 PayPay 結帳：BicCamera、松本清、Cocokara Fine、鶴羽藥妝、SUNDRUG、愛電王、LOFT、西武∙SOGO、LAOX']],
+ ln:[['官方活動與領券頁','https://marketing.pxpayplus.com/pxplus_marketing_page/PayPayEvent_V2'],['國泰世華帳戶週週加碼說明','https://www.cathay-cube.com.tw/cathaybk/personal/event/overview/Deposit/All/2026/PXPayPlus_Y26Q1_ACL_Campaign_Japan_Korea'],['優惠領券／活動登錄','https://marketing.pxpayplus.com/pxplus_marketing_page/PayPayEvent_V2',1]]},
+ew:{n:'玉山熊本熊卡｜PayPay 模式（綁玉山 Wallet）',rate:'5%',p:'季',cap:2857,note:'3.5% 現金回饋 ＋ 免 1.5% 海外手續費；每歸戶每季加碼上限 NT$100。',cond:'台幣扣款，不適用實體通路 2.5% 及指定商店 6% 加碼。',st:[],
+ ln:[['官方 PayPay 活動頁','https://event.esunbank.com.tw/credit/kumamon-card/japan-discount-paypay.html']]},
+ek:{n:'玉山熊本熊卡｜實體刷卡',rate:'指定商店最高 8.5%；一般日本 2.5%',p:'期',cap:8333,note:'日本一般 2.5% 無上限（需收 1.5% 手續費）＋ 指定商店加碼 6%（每歸戶每期上限 NT$500）；超過後仍享 2.5% 無上限。',cond:'指定商店 6% 加碼須登錄。',
+ st:[['服飾／雜貨','GU、UNIQLO、無印良品、Montbell、Alpen'],['藥妝／家電／商場','松本清、唐吉軻德、大國藥妝、BicCamera、Yodobashi、日本 MITSUI、LaLaport 購物園區'],['交通／住宿','Suica / PASMO / ICOCA 儲值、JR 鐵路公司、日本航空、東橫 INN、星野集團、Prince Hotel、樂天旅遊（日文版）、TOYOTA / Times / ORIX / OTS / NIPPON / Budget 租車'],['餐飲／樂園','鳥貴族、一蘭拉麵、壽司郎、藏壽司、敘敘苑、牛角、力丸燒肉、六歌仙、松屋、SUKIYA、Shake Shack、DOUTOR Coffee、Fuglen、人形町今半、日本環球影城、東京迪士尼、東京哈利波特影城、吉伊卡哇樂園'],['疊加優惠','BicCamera 出示專屬券再享 10% 免稅 ＋ 7% 折扣；COSMOS 藥妝最高 9% 折扣 ＋ 10% 免稅']],
+ ln:[['官方卡片介紹',E+'intro/bank-card/kumamon_card'],['指定日本商店 8.5% 完整名單','https://event.esunbank.com.tw/credit/kumamon-card/japan-discount.html'],L.bic,L.cos,['活動登錄網址','https://card.esunbank.com.tw/EsunCreditweb/txnservice/identify?PRJCD=ALLACTIV',1]]},
+sd:{n:'永豐幣倍卡｜日圓雙幣（實體／Apple Pay／Google Pay）',rate:'國外實體最高 6%',p:'月',cap:20000,note:'國外基本 2% 無上限 ＋ 精選通路 4%（每月上限 NT$800）；超過後仍有基本 2%。需收 1.5% 手續費，日圓帳戶扣款。',cond:'須設電子帳單 ＋ 永豐台幣／外幣自扣 ＋ 前月資產平均餘額達 NT$10 萬以上或為大戶／大戶 Plus。「國外滿額加倍賞」（月滿 3 萬贈 500／滿 5 萬贈 1,000）須登錄。不適用 PayPay。',
+ st:[['精選通路','國外實體全通路；國外網購（Suica / PASMO / ICOCA 線上儲值）與指定旅遊平台；永豐旅遊優惠（日本 MITSUI 等）']],
+ ln:[['官方卡片介紹','https://bank.sinopac.com/sinopacBT/personal/credit-card/introduction/bankcard/dual-currency-card.html'],['旅遊與特定通路優惠','https://bank.sinopac.com/sinopacBT/personal/credit-card/discount/814407078.html'],['活動登錄（滿額加倍賞）',SR,1]]},
+sj:{n:'永豐現金回饋 JCB 卡（實體／Apple Pay／Google Pay）',p:'',cap:0,note:'',cond:'須設電子／行動帳單 ＋ 永豐／京城帳戶自扣。不適用日本 PayPay。',
+ st:[['特選通路「日本」','涵蓋所有日本當地日幣實體消費'],['MyJapan+ by JCB APP','事前登錄參加指定商店加碼（如札幌／博多美食特約商店最高 30% 事後現金回饋等 JCB 禮遇）']],
+ ln:[['官方卡片介紹','https://bank.sinopac.com/sinopacbt/personal/credit-card/introduction/bankcard/cashcardJCB.html'],['MyJapan+ 指定店家優惠','https://bank.sinopac.com/sinopacBT/personal/credit-card/right/jcb-precious/APP.html'],['JCB 獨享日本禮遇','https://www.specialoffers.jcb/zh-tw/sinopacbank/'],['活動登錄與查詢',SR,1]]},
+un:{n:'玉山 Unicard｜UP 選（實體／Apple Pay／Google Pay／Samsung Pay）',p:'月',cap:142857,rate:'國外實體 4.5%',note:'一般消費 1% 無上限 ＋ UP 選百大指定消費加碼 3.5%（每月上限 5,000 點），需收 1.5% 手續費。',cond:'1% 須帳單 e 化 ＋ 玉山台幣帳戶自扣；UP 選須達上月刷 3 萬且資產 30 萬或扣 149 點訂閱。不適用 PayPay。',
+ st:[['疊加優惠','日本實體全通路 4.5%；BicCamera 出示專屬券再享 10% 免稅 ＋ 7% 折扣；COSMOS 藥妝最高 9% 折扣 ＋ 10% 免稅']],
+ ln:[['官方卡片介紹',E+'intro/bank-card/unicard'],L.bic,L.cos,['玉山日韓旅遊優惠總覽','https://event.esunbank.com.tw/credit/travel/jp_koa.html']]}
+};
+C.q1={...C.qp,n:'全支付｜第一週 11/19–11/22',s:'全支付（第一週 11/19–11/22）'};C.q2={...C.qp,n:'全支付｜第二週 11/23–11/25（週一重置）',s:'全支付（第二週 11/23–11/25）'};delete C.qp;
+function info(id){const c=C[id];let cap=c.cap,p=c.p,rate=c.rate,note=c.note;
+ if(id==='sj'){if(S.jcb==='a'){cap=10000;p='期';rate='5%（未登錄滿額加碼）';note='國外基本 2% 無上限 ＋ 特選日本 3%（每期上限 NT$300）。超過 1 萬後只剩基本 2%，請立刻換刷玉山 Unicard UP 選 4.5%！'}else{cap=20000;p='季';rate='最高 10%（已登錄滿額加碼）';note='上述 5% ＋ 日韓泰實體每季累積滿 NT$20,000 再加碼 5%（須搶每季限量 5,000 名登錄；每季上限 NT$1,000，須累積滿 NT$20,000 才觸發）。'}}
+ if(id==='un'){cap={up:142857,any:40000,simple:50000}[S.uni];rate={up:'4.5%（UP 選）',any:'4.5%（任意選 3.5%）',simple:'4.0%（簡單選 3%）'}[S.uni]}
+ const used=S.recs.filter(r=>r.c===id).reduce((a,r)=>a+r.twd,0);return{cap,p,rate,note,used,rem:Math.max(0,cap-used)}}
+const amtTwd=()=>cur==='JPY'?amt*S.rate:amt;
+function capbox(id){const i=info(id),a=amtTwd();
+ const s=i.rem<=0?(id==='q1'?'🔴 第一週已封頂並鎖定（請改刷玉山 Wallet／實體卡，11/23 週一重置）':'🔴 已封頂（請換下一張！）'):(a>i.rem?'🟡 本筆將超過上限（剩餘高回饋額度僅 NT$'+fmt(i.rem)+'）':'🟢 額度充足');
+ return `<div class="capbox"><div>封頂上限：NT$ <span class="n">${fmt(i.cap)}</span> <small>（約 ¥ <span class="n">${fmt(jpy(i.cap))}</span>／每${i.p}）</small></div><div>還可刷 NT$ <span class="n">${fmt(i.rem)}</span> <small>（約 ¥ <span class="n">${fmt(jpy(i.rem))}</span>）</small></div><span class="st">${s}</span></div>`}
+function btns(c){return `<div class="btns">${c.ln.map(l=>`<a class="${l[2]?'reg':''}" href="${l[1]}" target="_blank" rel="noopener noreferrer">${l[2]?'📝 ':'🔗 '}${l[0]}</a>`).join('')}</div>`}
+function card(id){const c=C[id],i=info(id);let tg='';
+ if(id==='sj')tg=`<label class="warn" style="display:block"><input type="checkbox" id="jt" ${S.jcb==='b'?'checked':''}> 我已登錄並達成「滿額加碼」模式（目前：${S.jcb==='b'?'狀態二 最高 10%':'狀態一 5%'}）</label>`;
+ if(id==='un')tg=`<div class="row"><select id="ut"><option value="up">UP 選（預設）</option><option value="any">任意選（上限 NT$40,000）</option><option value="simple">簡單選（上限 NT$50,000）</option></select></div>`;
+ return `<article class="c"><h3>${c.n}</h3><span class="tag">回饋 ${i.rate}</span><span class="tag">${i.p}上限</span><p style="margin:4px 0">${i.note}</p>${tg}${capbox(id)}<div class="warn">⚠️ 條件：${c.cond}</div>${c.st.length?`<details open><summary>特定店家加碼／優惠清單</summary><ul>${c.st.map(s=>`<li><b>${s[0]}：</b>${s[1]}</li>`).join('')}</ul></details>`:''}${btns(c)}</article>`}
+const R={
+A:['路線 A｜PayPay 掃碼付款',[['qp','先刷','全支付（連結國泰銀行帳戶，最高 15%；每週一～日重置，第一週 11/19–11/22、第二週 11/23–11/25 各自獨立計算）→ 當週滿額換下一張'],['ew','改刷','玉山 Wallet 綁玉山熊本熊卡（5%，免手續費）→ 滿額後改用實體卡']]],
+B:['路線 B｜實體刷卡：日本指定通路（GU、UNIQLO、藥妝、電器、Suica 儲值等）',[['ek','先刷','玉山熊本熊卡（最高 8.5%，加碼 6%）'],['sd','改刷','永豐幣倍卡（最高 6%）'],['sj','改刷','永豐現金回饋 JCB 卡（未登錄 5%；若已登錄滿 2 萬為 10%）'],['un','最後刷','玉山 Unicard UP 選（4.5%）']]],
+C:['路線 C｜實體刷卡：一般日本商店／百貨專櫃（非熊本熊指定通路）',[['sd','先刷','永豐幣倍卡（最高 6%）'],['sj','改刷','永豐現金回饋 JCB 卡（未登錄 5%；已登錄滿 2 萬為 10%）'],['un','改刷','玉山 Unicard UP 選（4.5%）'],['ek','最後備用','玉山熊本熊卡（一般 2.5% 無上限）']]]};
+R.U=['藥妝專用｜Unicard 優先（COSMOS 疊加優惠）',[['un','先刷','玉山 Unicard UP 選（4.5% ＋ COSMOS 9% 折扣 ＋ 10% 免稅）'],['sd','改刷','永豐幣倍卡（6%）'],['sj','改刷','永豐 JCB（5%）'],['ek','備用','玉山熊本熊卡（2.5%）']]];
+function route(k){const r=R[k];return `<article class="c"><h2>${r[0]}</h2>${r[1].map((s,n)=>`<div class="step"><b>${n+1}. ${s[1]}</b> ${s[2]}${capbox(rid(s[0]))}</div>`).join('')}</article>`}
+const V=[['GU','B','GU 為玉山熊本熊卡指定商店（8.5%）。但若設於百貨商場內、請款名稱非 GU 時不認列加碼，改刷永豐幣倍卡（6%）或永豐 JCB（5%）。'],['UNIQLO','B','熊本熊卡指定商店（8.5%），須先登錄。'],['無印良品','B','熊本熊卡指定商店（8.5%）。'],['BicCamera','B','出示專屬券可再享 10% 免稅 ＋ 7% 折扣（玉山熊本熊／Unicard）；亦可領全支付券用 PayPay。',1,'bic'],['Yodobashi','B','熊本熊卡指定商店（8.5%）。'],['松本清','B','熊本熊卡指定商店；全支付另有店家優惠條碼。',1],['唐吉軻德','B','熊本熊卡指定商店（8.5%）。'],['大國藥妝','B','熊本熊卡指定商店（8.5%）。'],['COSMOS 藥妝','U','玉山卡最高 9% 折扣 ＋ 10% 免稅。',0,'cos'],['Cocokara Fine / 鶴羽 / SUNDRUG','C','非熊本熊指定；領全支付優惠條碼後用 PayPay 最划算。',1],['LOFT / 愛電王','C','非熊本熊指定；全支付有店家優惠條碼。',1],['Suica / PASMO / ICOCA 儲值','B','熊本熊卡指定；線上儲值亦屬永豐幣倍卡精選通路（4% 加碼）。'],['鳥貴族','B','熊本熊卡指定餐飲（8.5%）。'],['一蘭拉麵','B','熊本熊卡指定餐飲（8.5%）。'],['壽司郎 / 藏壽司','B','熊本熊卡指定餐飲（8.5%）。'],['日本環球影城 / 東京迪士尼','B','熊本熊卡指定樂園（8.5%）。'],['百貨公司／商場專櫃','C','非熊本熊指定；西武∙SOGO 可領全支付優惠條碼。',1],['一般餐廳／路邊攤（PayPay）','P','小店多只收現金／PayPay，直接掃碼最方便。']];
+V.push(['SUGI 藥局','C','非熊本熊指定；請先取得旅客優惠券，免稅購物後依券面規定結帳。']);
+const DW='百貨券通常限該百貨使用、部分精品／食品／特價品不適用，須先至指定櫃台換領或出示護照。';
+const K={
+d1:['大丸・松坂屋｜5% 購物優惠券','https://dmdepart.jp/fl/coupon/e/','單筆含稅滿 ¥3,000，定價商品適用；限入境未滿 6 個月的外籍旅客，須出示護照；部分商品及品牌除外。'],
+d2:['高島屋｜5% Shopper’s Card','https://www.takashimaya.co.jp/store/special/shopperscard/index_en.html','先到指定櫃台領取／兌換：須持護照至店內指定櫃台領卡。單筆未稅滿 ¥3,000；部分品牌或商品除外；JR 名古屋高島屋及鄰接商場不適用。'],
+d3:['阪急・阪神百貨｜5% Guest Coupon','https://global.hankyu-hanshin-dept.co.jp/store/hankyuhonten/service/index.html','可預先登記，或先到指定櫃台領取／兌換；須符合免稅資格。部分食品、特價品及品牌除外。'],
+d4:['西武・SOGO｜5% OFF 優惠券','https://www.sogo-seibu.jp/global','結帳前出示優惠券與本人護照；部分商品除外。免稅需依日本 2026/11/1 起的退稅新制辦理。'],
+d5:['京王百貨新宿店｜5% 優惠券（東京新宿限定）','https://www.keionet.com/info/shinjuku/foreign/en/coupontop/index.html','僅東京新宿店適用，單筆未稅滿 ¥3,000；僅限訪日旅客，效期頁面標示至 2027/3/31。食品、特價品、部分品牌除外。'],
+d6:['近鐵百貨｜5% Guest Coupon','https://japanshopping.org/search/coupons/detail/%E8%BF%91%E9%89%84%E7%99%BE%E8%B2%A8%E5%BA%97-guest-coupon','單筆未稅滿 ¥2,000；頁面列出的參與門市適用，效期至 2027/3/31；食品、特價品及部分店舖除外。'],
+d7:['東急百貨｜5% 優惠券','https://www.tokyu-dept.co.jp/global/en/taxfree_information/','先到指定櫃台領取／兌換：持護照至指定櫃台；分店與參與店舖依官方頁面為準。'],
+mk:['松本清／Cocokara Fine｜3–7% 優惠券','https://matsumotokiyoshi.net/coupon','滿 ¥10,000 折 3%、滿 ¥30,000 折 5%、滿 ¥50,000 折 7%；效期至 2027/3/31。結帳前開啟官方頁面出示，不能用截圖或列印；部分店家及商品除外。'],
+jd:['SUNDRUG／TSURUHA｜JCB 藥妝 3–7% 優惠','https://www.specialoffers.jcb/en/campaign/detail/drugstore/19868/','滿 ¥10,000 折 3%、滿 ¥30,000 折 5%、滿 ¥50,000 折 7%。須結帳前出示優惠並以符合資格的 JCB 卡付款；日本發行的 JCB 卡不適用。SUNDRUG 優惠限免稅消費。活動頁列示效期至 2027/9/30。'],
+sg:['SUGI 藥局｜4–8% 優惠券','https://www.sugi-net.jp/en/','滿 ¥10,000 折 4%、滿 ¥30,000 折 6%、滿 ¥50,000 折 8%；旅客優惠券效期至 2027/2/28，限參與門市與符合免稅資格的購物。'],
+cs:['COSMOS 藥妝｜最高 9% 優惠券（優惠券資訊頁）','https://couponjp.com/en/brand/cosmos/','此為第三方優惠券整理頁，並非 COSMOS 官方頁面。目前列出東京、大阪、福岡的指定門市，使用前請核對門市清單及當期券面條件。'],
+sn:['SUNDRUG 新宿通店｜7% 指定門市優惠券（東京限定）','https://www.taxfreeshops.jp/en/shop/900000440/coupon/10001254','東京新宿通店舖限定；頁面列示效期至 2026/12/31，限免稅結帳，部分商品除外。'],
+gu:['GU｜5% 購物優惠券（WAmazing）','https://tw.wamazing.com/campaign/gu_coupon/tw','日本 GU 實體店鋪限定，結帳出示條碼享免稅 10% ＋ 5% OFF；依各店規定與免稅門檻辦理。'],
+dk:['唐吉軻德｜5–7% 官方優惠券','https://www.donki.com/en/tax_free/?mv=top_guige','2026/11 起，單筆含稅滿 ¥11,000 折 5%、滿 ¥33,000 折 7%；需結帳前出示即時券碼，截圖不接受，限免稅交易。'],
+bj:['BicCamera｜JCB 當期優惠 3–7%','https://www.specialoffers.jcb/en/campaign/detail/biccamera_tsunenyutai/95634/','JCB 卡付款、符合免稅資格時，家電／相機等 7%、藥妝日用品 5%、日本酒 3%；活動頁列示期間 2026/11/1–2027/10/31。此為 JCB 活動，與上方玉山 BicCamera 優惠是不同活動，請勿合併計算。']};
+const KV={'百貨公司／商場專櫃':['d1','d2','d3','d4','d5','d6','d7'],'GU':['gu'],'松本清':['mk'],'Cocokara Fine / 鶴羽 / SUNDRUG':['mk','jd','sn'],'COSMOS 藥妝':['cs'],'SUGI 藥局':['sg'],'唐吉軻德':['dk'],'BicCamera':['bj']};
+function coupons(v){const ks=KV[v[0]];if(!ks)return'';return `<article class="c"><h3>🎫 旅客折價券／優惠券</h3>${v[0]==='百貨公司／商場專櫃'?`<div class="warn">${DW}</div>`:''}${ks.map(k=>{const o=K[k];return `<div class="cp"><div class="btns"><a href="${o[1]}" target="_blank" rel="noopener noreferrer">🎫 ${o[0]}</a></div><small>${o[2]}</small></div>`}).join('')}<small>※ 不同券與回饋是否可疊加，請依各店規定為準；門檻、效期與門市以官方頁面為準。</small></article>`}
+const T=[['pri','📌 優先順序'],['pp','📱 PayPay 掃碼'],['phy','💳 實體刷卡'],['ven','🛍️ 消費場所'],['led','📒 記帳與額度']];
+function ledger(){const ids=Object.keys(C);
+ return `<article class="c"><h2>記一筆</h2><div class="row"><select id="lc">${ids.map(i=>`<option value="${i}">${C[i].s||C[i].n.split('（')[0]}</option>`).join('')}</select></div><div class="row"><input id="la" type="number" inputmode="decimal" placeholder="金額"><select id="lu"><option>JPY</option><option>TWD</option></select></div><div class="row"><input id="ln" placeholder="店家備註（如：GU 心齋橋）"></div><button class="b" id="add">＋ 記一筆</button></article>`+
+ ids.map(id=>{const i=info(id),pc=i.cap?Math.min(100,i.used/i.cap*100):0,rs=S.recs.filter(r=>r.c===id);
+ return `<article class="c"><h3>${C[id].n}</h3><div class="bar"><i style="width:${pc}%"></i></div><div class="capbox"><div>已刷 NT$ ${fmt(i.used)} ／ 封頂 NT$ <span class="n">${fmt(i.cap)}</span>（每${i.p}） ／ 剩餘可刷 NT$ <span class="n">${fmt(i.rem)}</span> <small>（約 ¥ <span class="n">${fmt(jpy(i.rem))}</span>）</small></div></div>${rs.map(r=>`<div class="rec"><span>${new Date(r.t).toLocaleDateString('zh-TW')} ${esc(r.note||'')} · NT$${fmt(r.twd)}${r.jpy?'（¥'+fmt(r.jpy)+'）':''}</span><button class="b x" data-d="${r.id}">刪除</button></div>`).join('')}<div class="btns"><button class="b g" data-z="${id}">此卡歸零</button></div></article>`}).join('')+`<button class="b x" id="zall">⚠️ 全部歸零</button>`}
+function venues(){const v=V[venue],rk=v[1];let h=`<div class="chips">${V.map((x,i)=>`<button data-v="${i}" class="${i===venue?'on':''}">${x[0]}</button>`).join('')}</div><article class="c"><h2>${v[0]}</h2><div class="warn">${v[2]}</div></article>`;
+ if(v[3])h+=`<p><b>📱 若店家可用 PayPay：</b></p>`+route('A');
+ h+=route(rk);
+ if(v[4])h+=`<div class="btns"><a href="${L[v[4]][1]}" target="_blank" rel="noopener noreferrer">🔗 ${L[v[4]][0]}</a></div>`;
+ return h+coupons(v)}
+function render(){
+ $('#nav').innerHTML=T.map(t=>`<button data-t="${t[0]}" class="${t[0]===tab?'on':''}">${t[1]}</button>`).join('');
+ $('#calc').classList.toggle('hide',!['pri','pp','phy'].includes(tab));
+ $('#conv').textContent=amt?(cur==='JPY'?`≈ NT$${fmt(amt*S.rate)}`:`≈ ¥${fmt(amt/S.rate)}`):'輸入金額後，每張卡會顯示剩餘額度狀態';
+ const b=$('#body');
+ if(tab==='pri')b.innerHTML=route('A')+route('B')+route('C');
+ else if(tab==='pp')b.innerHTML=card(rid('qp'))+card('ew');
+ else if(tab==='phy')b.innerHTML=['ek','sd','sj','un'].map(card).join('');
+ else if(tab==='ven')b.innerHTML=venues();
+ else b.innerHTML=ledger();
+ const jt=$('#jt');if(jt)jt.onchange=()=>{S.jcb=jt.checked?'b':'a';save();render()};
+ const ut=$('#ut');if(ut){ut.value=S.uni;ut.onchange=()=>{S.uni=ut.value;save();render()}}
+}
+document.addEventListener('click',e=>{const t=e.target;
+ if(t.dataset.t){tab=t.dataset.t;render();scrollTo(0,0)}
+ else if(t.dataset.v){venue=+t.dataset.v;render()}
+ else if(t.dataset.d){S.recs=S.recs.filter(r=>r.id!=t.dataset.d);save();render()}
+ else if(t.dataset.z){if(confirm('確定將此卡歸零？')){S.recs=S.recs.filter(r=>r.c!==t.dataset.z);save();render()}}
+ else if(t.id==='zall'){if(confirm('確定清除全部記帳？')){S.recs=[];save();render()}}
+ else if(t.id==='add'){const a=parseFloat($('#la').value);if(!(a>0))return alert('請輸入金額');const cid=$('#lc').value;if((cid==='q1'||cid==='q2')&&info(cid).rem<=0)return alert('此週全支付已封頂並鎖定，請改刷玉山 Wallet／實體卡');const u=$('#lu').value;
+  S.recs.push({id:Date.now(),c:$('#lc').value,twd:u==='JPY'?Math.round(a*S.rate):Math.round(a),jpy:u==='JPY'?a:0,note:$('#ln').value,t:Date.now()});save();render()}});
+$('#rate').value=S.rate;S.wk=S.wk||(new Date()>=new Date(2026,10,23)?'2':'1');$('#wk').value=S.wk;$('#wk').onchange=e=>{S.wk=e.target.value;save();render()};
+$('#rate').oninput=e=>{const v=parseFloat(e.target.value);if(v>0){S.rate=v;save();render()}};
+$('#amt').oninput=e=>{amt=parseFloat(e.target.value)||0;render()};
+$('#cur').onchange=e=>{cur=e.target.value;render()};
+render();
+</script>
+</body>
+</html>
